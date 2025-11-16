@@ -11,8 +11,8 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, EmailStr
+from typing import Optional, List
 
 # Example schemas (replace with your own):
 
@@ -37,6 +37,30 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Personal brand website schemas
+
+class Contactmessage(BaseModel):
+    """
+    Contact messages from the website
+    Collection name: "contactmessage"
+    """
+    name: str = Field(..., description="Sender's name")
+    email: EmailStr = Field(..., description="Sender's email")
+    subject: Optional[str] = Field(None, description="Message subject")
+    message: str = Field(..., min_length=1, max_length=5000, description="Message body")
+
+class Project(BaseModel):
+    """
+    Portfolio projects to showcase on site
+    Collection name: "project"
+    """
+    title: str = Field(..., description="Project title")
+    description: str = Field(..., description="Short description")
+    tags: Optional[List[str]] = Field(default_factory=list, description="Tech or keywords")
+    url: Optional[str] = Field(None, description="Live link")
+    repo: Optional[str] = Field(None, description="Repository link")
+    image: Optional[str] = Field(None, description="Image URL")
 
 # Add your own schemas here:
 # --------------------------------------------------
